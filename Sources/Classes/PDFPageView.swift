@@ -104,7 +104,7 @@ public final class PDFPageView: UIScrollView {
         singleTapOne.require(toFail: doubleTapOne)
         
         bouncesZoom = false
-        decelerationRate = UIScrollView.DecelerationRate.fast
+        decelerationRate = 0.99
         delegate = self
         autoresizesSubviews = true
         autoresizingMask = [.flexibleHeight, .flexibleWidth]
