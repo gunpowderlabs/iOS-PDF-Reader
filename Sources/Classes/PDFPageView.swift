@@ -15,7 +15,7 @@ protocol PDFPageViewDelegate: class {
 }
 
 /// An interactable page of a document
-internal final class PDFPageView: UIScrollView {
+public final class PDFPageView: UIScrollView {
     /// The TiledPDFView that is currently front most.
     private var tiledPDFView: TiledView
     
@@ -115,7 +115,7 @@ internal final class PDFPageView: UIScrollView {
     }
     
     // Use layoutSubviews to center the PDF page in the view.
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         // Center the image as it becomes smaller than the size of the screen.
@@ -200,14 +200,14 @@ internal final class PDFPageView: UIScrollView {
 extension PDFPageView: UIScrollViewDelegate {
     /// A UIScrollView delegate callback, called when the user starts zooming.
     /// Return the content view
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return contentView
     }
     
     /// A UIScrollView delegate callback, called when the user stops zooming.
     /// When the user stops zooming, create a new Tiled
     /// PDFView based on the new zoom level and draw it on top of the old TiledPDFView.
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+    public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         self.scale = scale
     }
 }

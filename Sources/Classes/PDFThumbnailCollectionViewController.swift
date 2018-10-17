@@ -15,7 +15,7 @@ protocol PDFThumbnailControllerDelegate: class {
 }
 
 /// Bottom collection of thumbnails that the user can interact with
-internal final class PDFThumbnailCollectionViewController: UICollectionViewController {
+public final class PDFThumbnailCollectionViewController: UICollectionViewController {
     /// Current document being displayed
     var document: PDFDocument!
     
@@ -43,7 +43,7 @@ internal final class PDFThumbnailCollectionViewController: UICollectionViewContr
         }
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.global(qos: .background).async {
             self.document.allPageImages(callback: { (images) in
@@ -54,11 +54,11 @@ internal final class PDFThumbnailCollectionViewController: UICollectionViewContr
         }
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pageImages?.count ?? 0
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PDFThumbnailCell
         
         cell.imageView?.image = pageImages?[indexPath.row]
@@ -71,7 +71,7 @@ internal final class PDFThumbnailCollectionViewController: UICollectionViewContr
         return PDFThumbnailCell.cellSize
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.didSelectIndexPath(indexPath)
     }
 }

@@ -14,7 +14,7 @@ protocol PDFPageCollectionViewCellDelegate: class {
 }
 
 /// A cell housing the interactable pdf page view
-internal final class PDFPageCollectionViewCell: UICollectionViewCell {
+public final class PDFPageCollectionViewCell: UICollectionViewCell {
     /// Index of the page
     var pageIndex: Int?
     

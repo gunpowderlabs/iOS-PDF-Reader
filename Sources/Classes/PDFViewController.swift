@@ -10,8 +10,16 @@ import UIKit
 extension PDFViewController {
     /// Initializes a new `PDFViewController`
     ///
+    /// - returns: a `PDFViewController`
+    public class func createNew() -> PDFViewController {
+        let storyboard = UIStoryboard(name: "PDFReader", bundle: Bundle(for: PDFViewController.self))
+        return storyboard.instantiateInitialViewController() as! PDFViewController
+    }
+    
+    /// Configures a `PDFViewController`
+    ///
     /// - parameter document:            PDF document to be displayed
-    /// - parameter title:               title that displays on the navigation bar on the PDFViewController; 
+    /// - parameter title:               title that displays on the navigation bar on the PDFViewController;
     ///                                  if nil, uses document's filename
     /// - parameter actionButtonImage:   image of the action button; if nil, uses the default action system item image
     /// - parameter actionStyle:         sytle of the action button
@@ -19,34 +27,31 @@ extension PDFViewController {
     /// - parameter isThumbnailsEnabled: whether or not the thumbnails bar should be enabled
     /// - parameter startPageIndex:      page index to start on load, defaults to 0; if out of bounds, set to 0
     ///
-    /// - returns: a `PDFViewController`
-    public class func createNew(with document: PDFDocument, title: String? = nil, actionButtonImage: UIImage? = nil, actionStyle: ActionStyle = .print, backButton: UIBarButtonItem? = nil, isThumbnailsEnabled: Bool = true, startPageIndex: Int = 0) -> PDFViewController {
-        let storyboard = UIStoryboard(name: "PDFReader", bundle: Bundle(for: PDFViewController.self))
-        let controller = storyboard.instantiateInitialViewController() as! PDFViewController
-        controller.document = document
-        controller.actionStyle = actionStyle
+    public func configure(with document: PDFDocument, title: String? = nil, actionButtonImage: UIImage? = nil, actionStyle: ActionStyle = .print, backButton: UIBarButtonItem? = nil, isThumbnailsEnabled: Bool = true, startPageIndex: Int = 0) {
+        self.document = document
+        self.actionStyle = actionStyle
         
         if let title = title {
-            controller.title = title
+            self.title = title
         } else {
-            controller.title = document.fileName
+            self.title = document.fileName
         }
         
         if startPageIndex >= 0 && startPageIndex < document.pageCount {
-            controller.currentPageIndex = startPageIndex
+            self.currentPageIndex = startPageIndex
         } else {
-            controller.currentPageIndex = 0
+            self.currentPageIndex = 0
         }
         
-        controller.backButton = backButton
+        self.backButton = backButton
         
         if let actionButtonImage = actionButtonImage {
-            controller.actionButton = UIBarButtonItem(image: actionButtonImage, style: .plain, target: controller, action: #selector(actionButtonPressed))
+            self.actionButton = UIBarButtonItem(image: actionButtonImage, style: .plain, target: self, action: #selector(actionButtonPressed))
         } else {
-            controller.actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: controller, action: #selector(actionButtonPressed))
+            self.actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionButtonPressed))
         }
-        controller.isThumbnailsEnabled = isThumbnailsEnabled
-        return controller
+        
+        self.isThumbnailsEnabled = isThumbnailsEnabled
     }
 }
 
@@ -77,24 +82,24 @@ public final class PDFViewController: UIViewController {
     @IBOutlet private var thumbnailCollectionControllerWidth: NSLayoutConstraint!
     
     /// PDF document that should be displayed
-    private var document: PDFDocument!
+    public var document: PDFDocument!
     
-    private var actionStyle = ActionStyle.print
+    public var actionStyle = ActionStyle.print
     
     /// Image used to override the default action button image
-    private var actionButtonImage: UIImage?
+    public var actionButtonImage: UIImage?
     
     /// Current page being displayed
-    private var currentPageIndex: Int = 0
+    public var currentPageIndex: Int = 0
     
     /// Bottom thumbnail controller
     private var thumbnailCollectionController: PDFThumbnailCollectionViewController?
     
     /// UIBarButtonItem used to override the default action button
-    private var actionButton: UIBarButtonItem?
+    public var actionButton: UIBarButtonItem?
     
     /// Backbutton used to override the default back button
-    private var backButton: UIBarButtonItem?
+    public var backButton: UIBarButtonItem?
     
     /// Background color to apply to the collectionView.
     public var backgroundColor: UIColor? = .lightGray {
@@ -104,7 +109,7 @@ public final class PDFViewController: UIViewController {
     }
     
     /// Whether or not the thumbnails bar should be enabled
-    private var isThumbnailsEnabled = true {
+    public var isThumbnailsEnabled = true {
         didSet {
             if thumbnailCollectionControllerHeight == nil {
                 _ = view
@@ -188,7 +193,7 @@ public final class PDFViewController: UIViewController {
     }
     
     /// Takes an appropriate action based on the current action style
-    @objc func actionButtonPressed() {
+    @objc public func actionButtonPressed() {
         switch actionStyle {
         case .print:
             print()

@@ -19,7 +19,7 @@ extension FloatingPoint {
 }
 
 /// Tiled representation of a portion of a rendered pdf page
-internal final class TiledView: UIView {
+public final class TiledView: UIView {
     /// Page of the PDF to be tiled
     private var leftPdfPage: CGPDFPage?
     
@@ -50,12 +50,12 @@ internal final class TiledView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override class var layerClass : AnyClass {
+    override public class var layerClass : AnyClass {
         return CATiledLayer.self
     }
     
     // Draw the CGPDFPage into the layer at the correct scale.
-    override func draw(_ layer: CALayer, in con: CGContext) {
+    override public func draw(_ layer: CALayer, in con: CGContext) {
         guard let leftPdfPage = leftPdfPage else { return }
         
         // Fill the background with white.
